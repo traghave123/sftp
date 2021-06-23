@@ -39,7 +39,7 @@ Steps to be followed:
 
     Edit /etc/haproxy/haproxy.cfg to add the entries:
 
-    frontend fe_ssh
+    ```frontend fe_ssh
         bind *:2222 #exposed port
         mode tcp
         default_backend ssh-all
@@ -51,7 +51,7 @@ Steps to be followed:
         server master2 10.17.16.173:31336 check
         server worker0 10.17.22.235:31336 check
         server worker1 10.17.23.98:31336 check
-        server worker2 10.17.28.68:31336 check
+        server worker2 10.17.28.68:31336 check```
 
 
 9. Create route:  
