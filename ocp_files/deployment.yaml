@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sftp
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    environment: production
+  name: sftp
+  namespace: sftp
+spec:
+  clusterIPs:
+  externalIPs: #optional
+  - 9.46.193.249 #your external IP which will be used to access the service from outside the cluster
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: port-1
+    port: 31336
+    protocol: TCP
+    targetPort: 22 # port exposed by container
+  - name: port-2
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    app: sftp
+    environment: production
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sftp
+  namespace: sftp
+  labels:
+    environment: production
+    app: sftp
+spec:
+  # how many pods and indicate which strategy we want for rolling update
+  replicas: 1
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      environment: production
+      app: sftp
+
+  template:
+    metadata:
+      labels:
+        environment: production
+        app: sftp
+
+    spec:
+      securityContext:
+        fsGroup: 2000
+      #secrets and config
+      containers:
+        #the sftp server itself
+        - name: sftp
+          image: traghave/centosnewsftp:v3 #your image 
+          imagePullPolicy: Always
+          volumeMounts:
+             - name: task-pv-storage
+               mountPath: /home/admin/sftp
+          args: ["foo:foo:1001:100:uploads"] #create users and dirs, uid and guid optional
+          #format: user:password:uid:guid:<dirs comma seperated>
+          #compulsory to give atleast one directory
+          #The users are chrooted to their home folders, so it is important to mount the volumes in separate folders inside the user's home folder (/home/your-user/your-folder).
+          ports:
+            - containerPort: 22 #port on which sftp can be reached out inside the container
+              protocol: TCP
+          securityContext:
+            capabilities:
+              add: 
+              - SYS_ADMIN
+              - AUDIT_CONTROL
+              - AUDIT_WRITE
+              - SYS_CHROOT
+          resources: {}
+
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: task-pv-claim
