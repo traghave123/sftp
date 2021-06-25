@@ -16,26 +16,21 @@ Steps to be followed:
 1. Ensure to have docker image ready as mentioned in SFTP Centos Image Creation
 2. Create namespace:  
     kubectl create namespace sftp  
-
-*// Step 3: optional. Ignore if custom storage class is present and update this custom storage class name in the persistent_volume and pvolume_claim files //*  
-
- 3. Create storage class:  
-      oc apply -f storage_class.yaml  
     
 *// Update the files according to your custom values if necessary before applying for the following steps //*  
 
-4. Create persistent volume:  
+3. Create persistent volume:  
     oc apply -f persistent_volume.yaml 
-5. Create volume claim:  
+4. Create volume claim:  
     oc apply -f pvolume_claim.yaml
-6. For privileged access run the command:  
+5. For privileged access run the command:  
     oc adm policy add-scc-to-user privileged -z default -n sftp  
 
 
-7. Create deployment and service:  
+6. Create deployment and service:  
       oc apply -f deployment.yaml
 
-8. Configure loadbalancer :
+7. Configure loadbalancer :
 
     Edit /etc/haproxy/haproxy.cfg to add the entries:
 
@@ -56,9 +51,9 @@ Steps to be followed:
    ```
 
 
-9. Create route:  
+8. Create route:  
     oc expose service [service name]  
     Eg: oc expose service sftp
-10. Access sftp service through:  
+9. Access sftp service through:  
     sftp -P [exposed port] [user]@[sftp-route]   
     Eg: sftp -P 2222 admin@sftp-rgv-lb-sftp.apps.raghavocp46.cp.fyre.ibm.com

@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: example-local-pv
+  name: opt-local-pv
 spec:
-  capacity:
-    storage: 500Gi
   accessModes:
   - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage #your custom storage class name
+  capacity:
+    storage: 500Gi
   hostPath:
-    path: /opt/sftpdata 
+    path: /opt/sftpdata
+    type: ""
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -18,4 +17,8 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - worker2.raghavocp46.cp.fyre.ibm.com #the node on which installation will happen
+          - worker2.raghavocp46.cp.fyre.ibm.com
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: manual
+  volumeMode: Filesystem
+status: {}

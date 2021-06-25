@@ -68,7 +68,7 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
              - name: task-pv-storage
-               mountPath: /home/foo/sftp
+               mountPath: /home/foo/uploads
           args: ["foo:foo:1001:100:uploads"] #create users and dirs, uid and guid optional
           #format: user:password:uid:guid:<dirs comma seperated>
           #compulsory to give atleast one directory
