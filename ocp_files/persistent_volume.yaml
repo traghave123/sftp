@@ -10,7 +10,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage #your custom storage class name
   hostPath:
-    path: /root/raghav/sftpdata #should exist on the workernode
+    path: /opt/sftpdata 
   nodeAffinity:
     required:
       nodeSelectorTerms:

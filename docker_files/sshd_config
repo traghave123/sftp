@@ -1,0 +1,13 @@
+Protocol 2
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+UseDNS no
+PermitRootLogin no
+Port 2222
+UsePAM no
+Subsystem sftp internal-sftp
+ChrootDirectory %h
+X11Forwarding no
+AllowTcpForwarding no
+ForceCommand internal-sftp
+UsePrivilegeSeparation no

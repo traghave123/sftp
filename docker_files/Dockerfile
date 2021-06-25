@@ -9,10 +9,11 @@ RUN rm -rf /var/lib/apt/lists/* && \
 RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
 ADD . /root
 WORKDIR /root
+COPY ssh_config /etc/ssh/ssh_config
 COPY sshd_config /etc/ssh/sshd_config
 COPY create-sftp-user /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/create-sftp-user"]
 COPY entrypoint /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/entrypoint"]
-EXPOSE 22
+EXPOSE 2222
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
