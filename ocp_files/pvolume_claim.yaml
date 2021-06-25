@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: task-pv-claim
 spec:
-  storageClassName: local-storage #your custom storage class name
+  storageClassName: manual #your custom storage class name
   accessModes:
     - ReadWriteOnce
   resources:
