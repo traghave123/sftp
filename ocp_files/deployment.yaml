@@ -62,22 +62,22 @@ spec:
     spec:
       #secrets and config
       containers:
-        #the sftp server itself
-        - name: sftp
-          image: traghave/centosnewsftp:v5 #your image 
-          imagePullPolicy: Always
-          volumeMounts:
-             - name: task-pv-storage
-               mountPath: /home/foo/uploads
-          args: ["foo:foo:1001:100:uploads"] #create users and dirs, uid and guid optional
-          #format: user:password:uid:guid:<dirs comma seperated>
-          #compulsory to give atleast one directory
-          #The users are chrooted to their home folders, so it is important to mount the volumes in separate folders inside the user's home folder (/home/your-user/your-folder).
-          ports:
-            - containerPort: 2222 #port on which sftp can be reached out inside the container
-              protocol: TCP
-          securityContext:
-          privileged: true
+      #the sftp server itself
+      - name: sftp
+        image: traghave/centosnewsftp:v5 #your image 
+        imagePullPolicy: Always
+        volumeMounts:
+           - name: task-pv-storage
+             mountPath: /home/foo/uploads
+        args: ["foo:foo:1001:100:uploads"] #create users and dirs, uid and guid optional
+        #format: user:password:uid:guid:<dirs comma seperated>
+        #compulsory to give atleast one directory
+        #The users are chrooted to their home folders, so it is important to mount the volumes in separate folders inside the user's home folder (/home/your-user/your-folder).
+        ports:
+          - containerPort: 2222 #port on which sftp can be reached out inside the container
+            protocol: TCP
+        securityContext:
+        privileged: true
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
