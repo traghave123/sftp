@@ -9,30 +9,22 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
+    app: sftp
     environment: production
   name: sftp
   namespace: sftp
 spec:
-  clusterIPs:
-  externalIPs: #optional
-  - 9.46.193.249 #your external IP which will be used to access the service from outside the cluster
-  externalTrafficPolicy: Cluster
   ports:
-  - name: port-1
-    port: 31336
+  - nodePort: 30654
+    port: 2222
     protocol: TCP
-    targetPort: 2222 # port exposed by container
-  - name: port-2
-    port: 443
-    protocol: TCP
-    targetPort: 443
+    targetPort: 2222
   selector:
     app: sftp
     environment: production
   sessionAffinity: None
-  type: LoadBalancer
-status:
-  loadBalancer: {}
+  type: NodePort
+
 
 ---
 
